@@ -1,0 +1,25 @@
+version: '2.2'
+services:
+  email_sender:
+    build:
+      context: ./confirmation_sender_consumer
+    depends_on:
+     - rabbit
+    restart: always
+  web:
+    build:
+      context: ./app
+    ports:
+     - "5000:5000"
+    depends_on:
+     - rabbit
+     - postgres
+    restart: always
+  rabbit:
+    image: "rabbitmq"
+    ports:
+     - "5672:5672"
+  postgres:
+    image: "postgres"
+    ports:
+     - "5433:5432"
